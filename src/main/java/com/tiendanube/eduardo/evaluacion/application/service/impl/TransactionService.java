@@ -1,9 +1,12 @@
 package com.tiendanube.eduardo.evaluacion.application.service.impl;
 
+import com.tiendanube.eduardo.evaluacion.application.mapper.TransactionMapper;
+import com.tiendanube.eduardo.evaluacion.domain.exception.TransactionAlreadyExistsException;
 import com.tiendanube.eduardo.evaluacion.infrastructure.external.numerator.client.INumeratorClient;
-import com.tiendanube.eduardo.evaluacion.application.dto.TransactionRequest;
+import com.tiendanube.eduardo.evaluacion.application.dto.MerchantsTransactionRequest;
 import com.tiendanube.eduardo.evaluacion.application.service.ITransactionService;
 import com.tiendanube.eduardo.evaluacion.infrastructure.external.transaction.client.ITransactionClient;
+import com.tiendanube.eduardo.evaluacion.infrastructure.external.transaction.dto.TransactionDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -27,32 +30,37 @@ public class TransactionService implements ITransactionService {
         this.transactionClient = transactionClient;
     }
 
-    public List<TransactionRequest> listAll() {
+    public List<MerchantsTransactionRequest> listAll() {
         return null;
     }
 
-    public Optional<TransactionRequest> findById(String id) {
+    public Optional<MerchantsTransactionRequest> findById(String id) {
         return null;
     }
 
-    public TransactionRequest create(TransactionRequest transactionRequest) {
+    public MerchantsTransactionRequest create(MerchantsTransactionRequest merchantsTransactionRequest) {
         int newIdNum = acquireNextUniqueId();
 
-        String last4Digits = transactionRequest.getCardNumber();
-        if (last4Digits != null && last4Digits.length() > 4) {
-            last4Digits = last4Digits.substring(last4Digits.length() - 4);
-        }
-
-        String newId = String.valueOf(newIdNum);
+        createTransactionIfNotExists(merchantsTransactionRequest, newIdNum);
 
         // TODO
-        //  registrar transaccion
         //  Registrar receivable
-        //  Usando ID unico generado
+
 
         numeratorClient.unlockNumerator();
 
         return null;
+    }
+
+    private void createTransactionIfNotExists(MerchantsTransactionRequest request, int newIdNum) {
+        TransactionDto existingTransaction = transactionClient.getTransactionById(newIdNum);
+
+        if (existingTransaction == null) {
+            logger.info("Transaction with id {} does not exist. Creating new transaction.", newIdNum);
+            transactionClient.createTransaction(TransactionMapper.toTransactionDto(newIdNum, request));
+        } else {
+            throw new TransactionAlreadyExistsException("Transaction with id " + newIdNum + " already exists.");
+        }
     }
 
     private int acquireNextUniqueId() {

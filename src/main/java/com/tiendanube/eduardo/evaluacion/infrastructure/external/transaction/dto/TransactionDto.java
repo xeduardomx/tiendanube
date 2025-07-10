@@ -1,7 +1,7 @@
-package com.tiendanube.eduardo.evaluacion.application.dto;
+package com.tiendanube.eduardo.evaluacion.infrastructure.external.transaction.dto;
 
+public class TransactionDto {
 
-public class TransactionRequest {
     private String id;
     private String value;
     private String description;
@@ -11,48 +11,18 @@ public class TransactionRequest {
     private String cardExpirationDate;
     private String cardCvv;
 
-    public TransactionRequest() {
-    }
+    public TransactionDto() {}
 
-    public TransactionRequest(Builder builder) {
-    }
-
-    public static class Builder {
-        public Builder id(String id) {
-            return this;
-        }
-
-        public Builder value(String value) {
-            return this;
-        }
-
-        public Builder description(String description) {
-            return this;
-        }
-
-        public Builder method(String method) {
-            return this;
-        }
-
-        public Builder cardNumber(String cardNumber) {
-            return this;
-        }
-
-        public Builder cardHolderName(String cardHolderName) {
-            return this;
-        }
-
-        public Builder cardExpirationDate(String cardExpirationDate) {
-            return this;
-        }
-
-        public Builder cardCvv(String cardCvv) {
-            return this;
-        }
-
-        public TransactionRequest build() {
-            return new TransactionRequest(this);
-        }
+    public TransactionDto(String id, String value, String description, String method, String cardNumber,
+                          String cardHolderName, String cardExpirationDate, String cardCvv) {
+        this.id = id;
+        this.value = value;
+        this.description = description;
+        this.method = method;
+        this.cardNumber = cardNumber;
+        this.cardHolderName = cardHolderName;
+        this.cardExpirationDate = cardExpirationDate;
+        this.cardCvv = cardCvv;
     }
 
     public String getId() {

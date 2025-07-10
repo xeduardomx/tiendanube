@@ -1,7 +1,7 @@
 package com.tiendanube.eduardo.evaluacion.presentation.controller;
 
 import com.tiendanube.eduardo.evaluacion.application.service.impl.TransactionService;
-import com.tiendanube.eduardo.evaluacion.application.dto.TransactionRequest;
+import com.tiendanube.eduardo.evaluacion.application.dto.MerchantsTransactionRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,8 +16,8 @@ public class TransactionController {
     }
 
     @PostMapping
-    public ResponseEntity<TransactionRequest> createTransaction(@RequestBody TransactionRequest transactionRequest) {
-        TransactionRequest created = transactionService.create(transactionRequest);
+    public ResponseEntity<MerchantsTransactionRequest> createTransaction(@RequestBody MerchantsTransactionRequest merchantsTransactionRequest) {
+        MerchantsTransactionRequest created = transactionService.create(merchantsTransactionRequest);
         return ResponseEntity.ok(created);
     }
 }
