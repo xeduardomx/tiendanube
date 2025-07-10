@@ -26,7 +26,7 @@ public class TransactionClient implements ITransactionClient {
     @Override
     public TransactionDto getTransactionById(int id) {
         return webClient.get()
-                .uri("/transactions/{id}", 1)
+                .uri("/transactions/{id}", id)
                 .retrieve()
                 .onStatus(
                         status -> status.isError() && status.value() != 404,

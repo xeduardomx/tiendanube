@@ -1,7 +1,7 @@
 package com.tiendanube.eduardo.evaluacion.application.service.impl;
 
-import com.tiendanube.eduardo.evaluacion.application.dto.ReceivableRequest;
 import com.tiendanube.eduardo.evaluacion.application.service.IReceivableService;
+import com.tiendanube.eduardo.evaluacion.infrastructure.external.receivable.dto.ReceivableDto;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -10,23 +10,23 @@ import java.util.*;
 public class ReceivableService implements IReceivableService {
 
     @Override
-    public List<ReceivableRequest> listAll() {
+    public List<ReceivableDto> listAll() {
         return null;
     }
 
     @Override
-    public Optional<ReceivableRequest> findById(String id) {
+    public Optional<ReceivableDto> findById(String id) {
         return null;
     }
 
     @Override
-    public ReceivableRequest create(ReceivableRequest receivableRequest) {
+    public ReceivableDto create(ReceivableDto receivableDto) {
         // Pending implementation
         return null;
     }
 
     @Override
-    public Optional<ReceivableRequest> update(String id, ReceivableRequest updatedReceivable) {
+    public Optional<ReceivableDto> update(String id, ReceivableDto updatedReceivable) {
         // Pending implementation
         return Optional.empty();
     }

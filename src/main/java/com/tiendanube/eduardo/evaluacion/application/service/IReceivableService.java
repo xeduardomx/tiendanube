@@ -1,20 +1,20 @@
 package com.tiendanube.eduardo.evaluacion.application.service;
 
 
-import com.tiendanube.eduardo.evaluacion.application.dto.ReceivableRequest;
+import com.tiendanube.eduardo.evaluacion.infrastructure.external.receivable.dto.ReceivableDto;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface IReceivableService {
 
-    List<ReceivableRequest> listAll();
+    List<ReceivableDto> listAll();
 
-    Optional<ReceivableRequest> findById(String id);
+    Optional<ReceivableDto> findById(String id);
 
-    ReceivableRequest create(ReceivableRequest receivableRequest);
+    ReceivableDto create(ReceivableDto receivableDto);
 
-    Optional<ReceivableRequest> update(String id, ReceivableRequest receivableRequest);
+    Optional<ReceivableDto> update(String id, ReceivableDto receivableDto);
 
     boolean delete(String id);
 }

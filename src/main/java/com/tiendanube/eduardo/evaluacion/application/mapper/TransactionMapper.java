@@ -13,9 +13,9 @@ public class TransactionMapper {
 
         return new TransactionDto(
                 String.valueOf(id),
-                request.getValue(),
+                request.getValue().toPlainString(),
                 request.getDescription(),
-                request.getMethod(),
+                request.getMethod().toString(),
                 last4Digits,
                 request.getCardHolderName(),
                 request.getCardExpirationDate(),

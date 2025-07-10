@@ -1,10 +1,12 @@
 package com.tiendanube.eduardo.evaluacion.application.dto;
 
 
+import java.math.BigDecimal;
+
 public class MerchantsTransactionRequest {
-    private String value;
+    private BigDecimal value;
     private String description;
-    private String method;
+    private PaymentMethod method;
     private String cardNumber;
     private String cardHolderName;
     private String cardExpirationDate;
@@ -17,11 +19,11 @@ public class MerchantsTransactionRequest {
     }
 
     public static class Builder {
-        public Builder id(String id) {
+        public Builder id(BigDecimal id) {
             return this;
         }
 
-        public Builder value(String value) {
+        public Builder value(BigDecimal value) {
             return this;
         }
 
@@ -29,7 +31,7 @@ public class MerchantsTransactionRequest {
             return this;
         }
 
-        public Builder method(String method) {
+        public Builder method(PaymentMethod method) {
             return this;
         }
 
@@ -54,11 +56,11 @@ public class MerchantsTransactionRequest {
         }
     }
 
-    public String getValue() {
+    public BigDecimal getValue() {
         return value;
     }
 
-    public void setValue(String value) {
+    public void setValue(BigDecimal value) {
         this.value = value;
     }
 
@@ -70,11 +72,11 @@ public class MerchantsTransactionRequest {
         this.description = description;
     }
 
-    public String getMethod() {
+    public PaymentMethod getMethod() {
         return method;
     }
 
-    public void setMethod(String method) {
+    public void setMethod(PaymentMethod method) {
         this.method = method;
     }
 
