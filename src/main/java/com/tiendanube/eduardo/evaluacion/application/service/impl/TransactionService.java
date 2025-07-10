@@ -19,6 +19,7 @@ import com.tiendanube.eduardo.evaluacion.infrastructure.external.transaction.dto
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -46,14 +47,12 @@ public class TransactionService implements ITransactionService {
         this.repository = repository;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public ReceivableTransaction create(MerchantsTransactionRequest merchantsTransactionRequest) {
         int newUniqueIdNum = acquireNextUniqueId();
         try {
-            createTransactionIfNotExists(merchantsTransactionRequest, newUniqueIdNum);
 
             ReceivableCalculationResult result = calculateReceivable(merchantsTransactionRequest);
-
-            createReceivableIfNotExists(result, newUniqueIdNum);
 
             ReceivableTransaction receivableTransaction = ReceivableTransactionMapper.toEntity(
                     newUniqueIdNum,
@@ -62,6 +61,10 @@ public class TransactionService implements ITransactionService {
             );
 
             repository.save(receivableTransaction);
+
+            createTransactionIfNotExists(merchantsTransactionRequest, newUniqueIdNum);
+
+            createReceivableIfNotExists(result, newUniqueIdNum);
 
             return receivableTransaction;
         } finally {
