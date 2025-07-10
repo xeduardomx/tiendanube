@@ -3,6 +3,14 @@ package com.tiendanube.eduardo.evaluacion.application.dto;
 
 import java.math.BigDecimal;
 
+//TODO:
+// Los datos sensibles (como cardNumber, cardHolderName, cardExpirationDate, cardCvv)
+// deberían enviarse cifrados desde el frontend usando una llave pública.
+// El backend debe mantener la llave privada bajo resguardo seguro para
+// descifrar los datos solo cuando sea necesario.
+// Esto mejora la seguridad en la transmisión y almacenamiento de datos sensibles.
+// Alternativamente, considerar usar TLS para cifrado en tránsito y cifrado
+// a nivel de base de datos o en el backend, dependiendo de los requerimientos de seguridad.
 public class MerchantsTransactionRequest {
     private BigDecimal value;
     private String description;
