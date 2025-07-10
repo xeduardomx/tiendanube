@@ -69,8 +69,6 @@ public class TransactionService implements ITransactionService {
         }
     }
 
-
-
     public ReceivableCalculationResult calculateReceivable(MerchantsTransactionRequest merchantsTransactionRequest) {
         return ReceivableCalculator.calculateReceivable(
                 merchantsTransactionRequest.getValue(),
@@ -127,6 +125,7 @@ public class TransactionService implements ITransactionService {
         for (ReceivableTransaction tx : transactions) {
             totalReceivable = totalReceivable.add(tx.getTotal());
 
+            //TODO los estados deben ser enum
             if ("waiting_funds".equalsIgnoreCase(tx.getStatus()) && tx.getPaymentDay() != null && tx.getPaymentDay().isAfter(today)) {
                 futureReceivable = futureReceivable.add(tx.getTotal());
             }
@@ -140,6 +139,5 @@ public class TransactionService implements ITransactionService {
 
         return new ReceivableSummary(totalReceivable, futureReceivable, totalCommissions, totalReceived);
     }
-
 
 }
