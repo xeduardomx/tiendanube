@@ -49,8 +49,9 @@ public class TransactionService implements ITransactionService {
 
     @Transactional(rollbackFor = Exception.class)
     public ReceivableTransaction create(MerchantsTransactionRequest merchantsTransactionRequest) {
-        int newUniqueIdNum = acquireNextUniqueId();
+
         try {
+            int newUniqueIdNum = acquireNextUniqueId();
 
             ReceivableCalculationResult result = calculateReceivable(merchantsTransactionRequest);
 
