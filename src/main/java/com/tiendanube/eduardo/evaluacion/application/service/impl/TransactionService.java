@@ -1,6 +1,9 @@
 package com.tiendanube.eduardo.evaluacion.application.service.impl;
 
+import com.tiendanube.eduardo.evaluacion.application.mapper.ReceivableTransactionMapper;
 import com.tiendanube.eduardo.evaluacion.domain.exception.ReceivableAlreadyExistsException;
+import com.tiendanube.eduardo.evaluacion.domain.model.ReceivableTransaction;
+import com.tiendanube.eduardo.evaluacion.domain.repository.ReceivableTransactionRepository;
 import com.tiendanube.eduardo.evaluacion.infrastructure.external.receivable.client.IReceivableClient;
 import com.tiendanube.eduardo.evaluacion.infrastructure.external.receivable.dto.ReceivableDto;
 import com.tiendanube.eduardo.evaluacion.application.dto.ReceivableCalculationResult;
@@ -25,20 +28,21 @@ public class TransactionService implements ITransactionService {
     private final INumeratorClient numeratorClient;
     private final ITransactionClient transactionClient;
     private final IReceivableClient receivableClient;
+    private final ReceivableTransactionRepository repository;
 
 
     public TransactionService(
             INumeratorClient numeratorClient,
             ITransactionClient transactionClient,
-            IReceivableClient receivableClient) {
+            IReceivableClient receivableClient, ReceivableTransactionRepository repository) {
         this.numeratorClient = numeratorClient;
         this.transactionClient = transactionClient;
         this.receivableClient = receivableClient;
+        this.repository = repository;
     }
 
-    public MerchantsTransactionRequest create(MerchantsTransactionRequest merchantsTransactionRequest) {
+    public ReceivableTransaction create(MerchantsTransactionRequest merchantsTransactionRequest) {
         int newUniqueIdNum = acquireNextUniqueId();
-
         try {
             createTransactionIfNotExists(merchantsTransactionRequest, newUniqueIdNum);
 
@@ -46,12 +50,20 @@ public class TransactionService implements ITransactionService {
 
             createReceivableIfNotExists(result, newUniqueIdNum);
 
+            ReceivableTransaction receivableTransaction = ReceivableTransactionMapper.toEntity(
+                    newUniqueIdNum,
+                    merchantsTransactionRequest,
+                    result
+            );
+
+            repository.save(receivableTransaction);
+
+            return receivableTransaction;
         } finally {
             numeratorClient.unlockNumerator();
         }
-
-        return merchantsTransactionRequest;
     }
+
 
 
     public ReceivableCalculationResult calculateReceivable(MerchantsTransactionRequest merchantsTransactionRequest) {

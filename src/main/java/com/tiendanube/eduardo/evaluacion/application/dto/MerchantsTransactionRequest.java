@@ -19,6 +19,7 @@ public class MerchantsTransactionRequest {
     private String cardHolderName;
     private String cardExpirationDate;
     private String cardCvv;
+    private String merchantId;
 
     public MerchantsTransactionRequest() {
     }
@@ -56,6 +57,10 @@ public class MerchantsTransactionRequest {
         }
 
         public Builder cardCvv(String cardCvv) {
+            return this;
+        }
+
+        public Builder merchantId(String merchantId) {
             return this;
         }
 
@@ -119,4 +124,8 @@ public class MerchantsTransactionRequest {
     public void setCardCvv(String cardCvv) {
         this.cardCvv = cardCvv;
     }
+
+    public String getMerchantId() { return merchantId; }
+
+    public void setMerchantId(String merchantId) { this.merchantId = merchantId; }
 }

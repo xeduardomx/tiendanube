@@ -1,7 +1,8 @@
 package com.tiendanube.eduardo.evaluacion.application.service;
 
 import com.tiendanube.eduardo.evaluacion.application.dto.MerchantsTransactionRequest;
+import com.tiendanube.eduardo.evaluacion.domain.model.ReceivableTransaction;
 
 public interface ITransactionService {
-    MerchantsTransactionRequest create(MerchantsTransactionRequest merchantsTransactionRequest);
+    ReceivableTransaction create(MerchantsTransactionRequest merchantsTransactionRequest);
 }
