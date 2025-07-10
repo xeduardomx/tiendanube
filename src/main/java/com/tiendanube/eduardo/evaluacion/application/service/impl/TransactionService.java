@@ -1,5 +1,6 @@
 package com.tiendanube.eduardo.evaluacion.application.service.impl;
 
+import com.tiendanube.eduardo.evaluacion.application.dto.ReceivableSummary;
 import com.tiendanube.eduardo.evaluacion.application.mapper.ReceivableTransactionMapper;
 import com.tiendanube.eduardo.evaluacion.domain.exception.ReceivableAlreadyExistsException;
 import com.tiendanube.eduardo.evaluacion.domain.model.ReceivableTransaction;
@@ -18,6 +19,10 @@ import com.tiendanube.eduardo.evaluacion.infrastructure.external.transaction.dto
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
 
 
 @Service
@@ -104,4 +109,37 @@ public class TransactionService implements ITransactionService {
 
         return newUniqueIdNum;
     }
+
+    public List<ReceivableTransaction> getTransactionsByMerchant(String merchantId) {
+        return repository.findByMerchantId(merchantId);
+    }
+
+    public ReceivableSummary calculateReceivableSummary(String merchantId, LocalDate startDate, LocalDate endDate) {
+        List<ReceivableTransaction> transactions = repository.findByMerchantIdAndCreateDateBetween(merchantId, startDate, endDate);
+
+        BigDecimal totalReceivable = BigDecimal.ZERO;
+        BigDecimal futureReceivable = BigDecimal.ZERO;
+        BigDecimal totalCommissions = BigDecimal.ZERO;
+        BigDecimal totalReceived = BigDecimal.ZERO;
+
+        LocalDate today = LocalDate.now();
+
+        for (ReceivableTransaction tx : transactions) {
+            totalReceivable = totalReceivable.add(tx.getTotal());
+
+            if ("waiting_funds".equalsIgnoreCase(tx.getStatus()) && tx.getPaymentDay() != null && tx.getPaymentDay().isAfter(today)) {
+                futureReceivable = futureReceivable.add(tx.getTotal());
+            }
+
+            if ("paid".equalsIgnoreCase(tx.getStatus())) {
+                totalReceived = totalReceived.add(tx.getTotal());
+            }
+
+            totalCommissions = totalCommissions.add(tx.getDiscount());
+        }
+
+        return new ReceivableSummary(totalReceivable, futureReceivable, totalCommissions, totalReceived);
+    }
+
+
 }

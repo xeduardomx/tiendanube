@@ -5,7 +5,7 @@ import com.tiendanube.eduardo.evaluacion.application.dto.ReceivableCalculationRe
 
 import java.math.BigDecimal;
 
-public class ReceivableCalculator {
+public class ReceivableCalculator{
 
     public static ReceivableCalculationResult calculateReceivable(
             BigDecimal subtotal,
@@ -14,6 +14,7 @@ public class ReceivableCalculator {
         BigDecimal commissionRate;
         String status;
 
+        //TODO Los valores se deben definir en properties, el estado deber ser un enum
         switch (method) {
             case DEBIT_CARD -> {
                 commissionRate = new BigDecimal("0.02");

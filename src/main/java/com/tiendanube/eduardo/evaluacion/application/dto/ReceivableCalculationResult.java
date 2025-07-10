@@ -1,7 +1,6 @@
 package com.tiendanube.eduardo.evaluacion.application.dto;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 public class ReceivableCalculationResult {
     private BigDecimal subtotal;

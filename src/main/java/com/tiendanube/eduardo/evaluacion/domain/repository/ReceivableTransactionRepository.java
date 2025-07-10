@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository
 public interface ReceivableTransactionRepository extends JpaRepository<ReceivableTransaction, String> {
-    //List<ReceivableTransaction> findByMerchantIdAndCreateDateBetween(String merchantId, LocalDate startDate, LocalDate endDate);
+    List<ReceivableTransaction> findByMerchantIdAndCreateDateBetween(String merchantId, LocalDate startDate, LocalDate endDate);
+    List<ReceivableTransaction> findByMerchantId(String merchantId);
 }
 
