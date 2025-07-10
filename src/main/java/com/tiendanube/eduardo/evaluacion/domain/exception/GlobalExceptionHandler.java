@@ -41,6 +41,29 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 
+    @ExceptionHandler(TransactionAlreadyExistsException.class)
+    public ResponseEntity<ApiErrorResponse> handleTransactionAlreadyExists(TransactionAlreadyExistsException ex) {
+        logger.warn("Transaction already exists: {}", ex.getMessage());
+        ApiErrorResponse response = new ApiErrorResponse(
+                409,
+                "Transaction Conflict",
+                ex.getMessage()
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+
+    @ExceptionHandler(ReceivableAlreadyExistsException.class)
+    public ResponseEntity<ApiErrorResponse> handleReceivableAlreadyExists(ReceivableAlreadyExistsException ex) {
+        logger.warn("Receivable already exists: {}", ex.getMessage());
+        ApiErrorResponse response = new ApiErrorResponse(
+                409,
+                "Receivable Conflict",
+                ex.getMessage()
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiErrorResponse> handleAllExceptions(Exception ex) {
         Throwable cause = ex;

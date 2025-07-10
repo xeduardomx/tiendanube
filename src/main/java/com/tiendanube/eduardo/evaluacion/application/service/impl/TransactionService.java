@@ -39,16 +39,20 @@ public class TransactionService implements ITransactionService {
     public MerchantsTransactionRequest create(MerchantsTransactionRequest merchantsTransactionRequest) {
         int newUniqueIdNum = acquireNextUniqueId();
 
-        createTransactionIfNotExists(merchantsTransactionRequest, newUniqueIdNum);
+        try {
+            createTransactionIfNotExists(merchantsTransactionRequest, newUniqueIdNum);
 
-        ReceivableCalculationResult result = calculateReceivable(merchantsTransactionRequest);
+            ReceivableCalculationResult result = calculateReceivable(merchantsTransactionRequest);
 
-        createReceivableIfNotExists(result, newUniqueIdNum);
+            createReceivableIfNotExists(result, newUniqueIdNum);
 
-        numeratorClient.unlockNumerator();
+        } finally {
+            numeratorClient.unlockNumerator();
+        }
 
         return merchantsTransactionRequest;
     }
+
 
     public ReceivableCalculationResult calculateReceivable(MerchantsTransactionRequest merchantsTransactionRequest) {
         return ReceivableCalculator.calculateReceivable(
@@ -56,7 +60,6 @@ public class TransactionService implements ITransactionService {
                 merchantsTransactionRequest.getMethod()
         );
     }
-
 
     private void createTransactionIfNotExists(MerchantsTransactionRequest request, int newUniqueIdNum) {
         TransactionDto existingTransaction = transactionClient.getTransactionById(newUniqueIdNum);
