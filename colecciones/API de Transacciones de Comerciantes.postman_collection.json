@@ -1,0 +1,95 @@
+{
+	"info": {
+		"_postman_id": "ea837078-3a3a-44a6-a3a3-882652602e2a",
+		"name": "API de Transacciones de Comerciantes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Crear transaccion de comerciante",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\n    \"value\": \"215.31\",\n    \"description\": \"T-Shirt Black/M\",\n    \"method\": \"debit_card\",\n    \"cardNumber\": \"4111111111113485\",\n    \"cardHolderName\": \"Fonsi Julian\",\n    \"cardExpirationDate\": \"04/28\",\n    \"cardCvv\": \"290\",\n    \"merchantId\": \"1\"\n  }\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:9090/api/transactions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"api",
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transaccion por comerciante",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9090/api/transactions/merchant/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"api",
+						"transactions",
+						"merchant",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Transaccion summary",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:9090/api/transactions/summary?merchantId=1&startDate=2025-07-09&endDate=2025-07-11",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9090",
+					"path": [
+						"api",
+						"transactions",
+						"summary"
+					],
+					"query": [
+						{
+							"key": "merchantId",
+							"value": "1"
+						},
+						{
+							"key": "startDate",
+							"value": "2025-07-09"
+						},
+						{
+							"key": "endDate",
+							"value": "2025-07-11"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

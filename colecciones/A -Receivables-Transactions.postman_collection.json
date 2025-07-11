@@ -1,0 +1,161 @@
+{
+	"info": {
+		"_postman_id": "1c4eb14e-0e7e-4596-8dd9-c008f12727ad",
+		"name": "A -Receivables/Transactions",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get receivables",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/receivables",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"receivables"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get transactions",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/receivables",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"receivables"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create receivables",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"1\",\n    \"status\": \"paid\",\n    \"create_date\": \"15/03/2020\",\n    \"subtotal\": \"200\",\n    \"discount\": \"4\",\n    \"total\": \"196\"\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/receivables",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"receivables"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add transaction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"value\": \"140.30\",\n    \"description\": \"T-Shirt Black/M\",\n    \"method\": \"credit_card\",\n    \"cardNumber\": \"3486\",\n    \"cardHolderName\": \"Fonsi Julian\",\n    \"cardExpirationDate\": \"04/28\",\n    \"cardCvv\": \"290\",\n    \"id\": \"1\"\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/transactions",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transactions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete transaction",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"value\": \"340.30\",\n    \"description\": \"T-Shirt Black/M\",\n    \"method\": \"credit_card\",\n    \"cardNumber\": \"3486\",\n    \"cardHolderName\": \"Fonsi Julian\",\n    \"cardExpirationDate\": \"04/28\",\n    \"cardCvv\": \"290\",\n    \"id\": \"1\"\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/transactions/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transactions",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete receivables",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": \"1\",\n    \"status\": \"paid\",\n    \"create_date\": \"15/03/2020\",\n    \"subtotal\": \"200\",\n    \"discount\": \"4\",\n    \"total\": \"196\"\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/receivables/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"receivables",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
