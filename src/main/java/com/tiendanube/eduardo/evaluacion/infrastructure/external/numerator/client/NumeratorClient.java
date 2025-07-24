@@ -93,6 +93,11 @@ public class NumeratorClient implements INumeratorClient {
                         response -> Mono.error(new RuntimeException("Unexpected error: " + response.statusCode())))
                 .bodyToMono(TestAndSetResponse.class)
                 .map(TestAndSetResponse::isSuccess)
+                .retryWhen(
+                        Retry.fixedDelay(3, Duration.ofMillis(200))
+                                .filter(throwable -> throwable instanceof NumeratorException &&
+                                        "Bad request in test-and-set".equals(throwable.getMessage()))
+                )
                 .blockOptional()
                 .orElseThrow(() -> new NumeratorException("Test and set operation failed with empty response"));
     }

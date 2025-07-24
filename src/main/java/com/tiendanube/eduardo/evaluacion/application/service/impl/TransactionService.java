@@ -2,6 +2,7 @@ package com.tiendanube.eduardo.evaluacion.application.service.impl;
 
 import com.tiendanube.eduardo.evaluacion.application.dto.ReceivableSummary;
 import com.tiendanube.eduardo.evaluacion.application.mapper.ReceivableTransactionMapper;
+import com.tiendanube.eduardo.evaluacion.domain.exception.NumeratorException;
 import com.tiendanube.eduardo.evaluacion.domain.exception.ReceivableAlreadyExistsException;
 import com.tiendanube.eduardo.evaluacion.domain.model.ReceivableTransaction;
 import com.tiendanube.eduardo.evaluacion.domain.repository.ReceivableTransactionRepository;
@@ -50,27 +51,24 @@ public class TransactionService implements ITransactionService {
     @Transactional(rollbackFor = Exception.class)
     public ReceivableTransaction create(MerchantsTransactionRequest merchantsTransactionRequest) {
 
-        try {
-            int newUniqueIdNum = acquireNextUniqueId();
 
-            ReceivableCalculationResult result = calculateReceivable(merchantsTransactionRequest);
+        int newUniqueIdNum = acquireNextUniqueId();
 
-            ReceivableTransaction receivableTransaction = ReceivableTransactionMapper.toEntity(
-                    newUniqueIdNum,
-                    merchantsTransactionRequest,
-                    result
-            );
+        ReceivableCalculationResult result = calculateReceivable(merchantsTransactionRequest);
 
-            repository.save(receivableTransaction);
+        ReceivableTransaction receivableTransaction = ReceivableTransactionMapper.toEntity(
+                newUniqueIdNum,
+                merchantsTransactionRequest,
+                result
+        );
 
-            createTransactionIfNotExists(merchantsTransactionRequest, newUniqueIdNum);
+        repository.save(receivableTransaction);
 
-            createReceivableIfNotExists(result, newUniqueIdNum);
+        createTransactionIfNotExists(merchantsTransactionRequest, newUniqueIdNum);
 
-            return receivableTransaction;
-        } finally {
-            numeratorClient.unlockNumerator();
-        }
+        createReceivableIfNotExists(result, newUniqueIdNum);
+
+        return receivableTransaction;
     }
 
     public ReceivableCalculationResult calculateReceivable(MerchantsTransactionRequest merchantsTransactionRequest) {
@@ -106,10 +104,19 @@ public class TransactionService implements ITransactionService {
         int oldIdNum = numeratorClient.getNumerator();
         int newUniqueIdNum = oldIdNum + 1;
 
-        numeratorClient.lockNumerator();
-        numeratorClient.testAndSetNumerator(oldIdNum, newUniqueIdNum);
+        try {
+            numeratorClient.testAndSetNumerator(oldIdNum, newUniqueIdNum);
+        } catch (NumeratorException e) {
+            testAndSetWithLock(oldIdNum, newUniqueIdNum);
+        }
 
         return newUniqueIdNum;
+    }
+
+    private void testAndSetWithLock(int oldIdNum, int newUniqueIdNum) {
+        numeratorClient.lockNumerator();
+        numeratorClient.testAndSetNumerator(oldIdNum, newUniqueIdNum);
+        numeratorClient.unlockNumerator();
     }
 
     public List<ReceivableTransaction> getTransactionsByMerchant(String merchantId) {
